@@ -77,6 +77,12 @@ info "Using '$STORAGE' for storage location."
 
 # Get the next guest VM/LXC ID
 VMID=$(pvesh get /cluster/nextid)
+echo -n "Enter VM ID (or press enter to use ID $VMID): "
+read new_VMID
+if [[ $new_VMID != ""  ]]
+then
+  VMID=$new_VMID
+fi
 info "Container ID is $VMID."
 
 # Get latest Home Assistant disk image archive URL
@@ -113,6 +119,7 @@ msg "Extracting disk image..."
 case $FILE in
   *"gz") gunzip -f $FILE;;
   *"xz") xz -d $FILE;;
+  *"zip") unzip $FILE;;
   *) die "Unable to handle file extension '${FILE##*.}'.";;
 esac
 
